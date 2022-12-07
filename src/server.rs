@@ -62,12 +62,13 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 self.hb = Instant::now();
             }
             //
-            Ok(ws::Message::Text(text)) => {
+            Ok(ws::Message::Text(_)) => {
                 let file = File::open("./static/10mb").unwrap();
                 let mut reader = BufReader::new(file);
                 let mut buffer = Vec::new();
 
-                reader.read_to_end(&mut buffer).
+                reader.read_to_end(&mut buffer).unwrap();
+                ctx.binary(Bytes::from(buffer));
             }
             // Close will close the socket
             Ok(ws::Message::Close(reason)) => {
