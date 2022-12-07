@@ -22,14 +22,20 @@ async fn websocket(req: HttpRequest, stream: web::Payload) -> Result<HttpRespons
     ws::start(MyWebSocket::new(), &req, stream)
 }
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-
+fn build_ssl() -> SslAcceptorBuilder {
     let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
 
     builder.set_private_key_file("./ssl/key.pem", SslFiletype::PEM).unwrap();
 
     builder.set_certificate_chain_file("./ssl/cert.pem").unwrap();
+
+    return builder;
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+
+
 
 
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
@@ -43,7 +49,7 @@ async fn main() -> std::io::Result<()> {
         .wrap(middleware::Logger::default())
     })
     .workers(3)
-    .bind(("0.0.0.0:8080", builder))?
+    .bind_openssl("0.0.0.0:8080", (build_ssl()))?
     .run()
     .await
 }
