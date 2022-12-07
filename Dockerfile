@@ -1,6 +1,6 @@
 FROM rust:1.59.0
 
-WORKDIR /usr/src/mws-speedtest
+WORKDIR /usr/src/speedtest
 COPY . .
 
 RUN cargo install --path .
