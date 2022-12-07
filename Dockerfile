@@ -7,4 +7,4 @@ RUN cargo install --path .
 
 EXPOSE 8080
 
-CMD ["mws-speedtest-server"]
+CMD ["speedtest-server"]

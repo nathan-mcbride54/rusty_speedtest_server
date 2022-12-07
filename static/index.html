@@ -85,9 +85,12 @@
 
     const $startButton = document.querySelector("#start");
     const $log = document.querySelector("#log");
+
     // Calculate average from array of numbers
     const average = (array) => array.reduce((a, b) => a + b) / array.length;
+
     const totalTests = 10;
+
     let startTime,
         endTime,
         testResults = [];
@@ -136,7 +139,7 @@
             // Creates a log that indicates the test case is finished
             // and the time it took to complete the test.
             log(
-                `Completed Test: ${testsRun}/${totalTests}. Took ${
+                `Test: ${testsRun}/${totalTests}. Took ${
                     endTime - startTime
                 } milliseconds.`
             );
