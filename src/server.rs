@@ -52,16 +52,20 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
     // it should respond with a pong. These two messages are necessary
     // for the `hb()` function to maintain the connection status.
     fn handle(&mut self, msg: Result<ws::Message, ws::ProtocolError>, ctx: &mut Self::Context) {
+
         match msg {
+
             // Ping/Pong will be used to make sure the connection is still alive
             Ok(ws::Message::Ping(msg)) => {
                 self.hb = Instant::now();
                 ctx.pong(&msg);
             }
+
             Ok(ws::Message::Pong(_)) => {
                 self.hb = Instant::now();
             }
-            //
+
+            // Send the 10mb chunk
             Ok(ws::Message::Text(_)) => {
                 let file = File::open("./static/10mb").unwrap();
                 let mut reader = BufReader::new(file);
@@ -70,6 +74,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
                 reader.read_to_end(&mut buffer).unwrap();
                 ctx.binary(Bytes::from(buffer));
             }
+
             // Close will close the socket
             Ok(ws::Message::Close(reason)) => {
                 ctx.close(reason);
