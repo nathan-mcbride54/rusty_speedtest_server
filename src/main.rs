@@ -1,10 +1,8 @@
-use actix_files::NamedFile;
-// Add HttpRequest and HttpResponse
 use actix_web::{middleware, web, App, Error, HttpRequest, HttpResponse, HttpServer, Responder};
+use actix_files::NamedFile;
 use actix_web_actors::ws;
 
-// Import the WebSocket logic we wrote earlier.
-mod server;
+mod server; // Import the server module
 use self::server::MyWebSocket;
 
 async fn index() -> impl Responder {

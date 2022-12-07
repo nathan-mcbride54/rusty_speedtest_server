@@ -22,7 +22,7 @@ impl MyWebSocket {
     // This function will run on an interval, every 5 seconds to check
     // that the connection is still alive. If it's been more than
     // 10 seconds since the last ping, we'll close the connection.
-    fn hb(&self, ctx: &mut <Self as Actor>::Context) {
+    fn heartbeat(&self, ctx: &mut <Self as Actor>::Context) {
         ctx.run_interval(HEARTBEAT_INTERVAL, |act, ctx| {
             if Instant::now().duration_since(act.hb) > CLIENT_TIMEOUT {
                 ctx.stop();
@@ -39,7 +39,7 @@ impl Actor for MyWebSocket {
 
     // Start the heartbeat process for this connection
     fn started(&mut self, ctx: &mut Self::Context) {
-        self.hb(ctx);
+        self.heartbeat(ctx);
     }
 }
 
