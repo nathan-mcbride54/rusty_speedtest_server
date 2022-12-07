@@ -49,7 +49,7 @@ async fn main() -> std::io::Result<()> {
         .wrap(middleware::Logger::default())
     })
     .workers(3)
-    .bind_openssl("0.0.0.0:8080", (build_ssl()))?
+    .bind_openssl("0.0.0.0:8080", build_ssl())?
     .run()
     .await
 }
