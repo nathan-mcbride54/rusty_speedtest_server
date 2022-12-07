@@ -107,6 +107,7 @@
 
         const proto = location.protocol.startsWith("https") ? "wss" : "ws";
         const wsUri = `${proto}://${location.host}/ws`;
+
         let testsRun = 0;
 
         log("Starting...");
@@ -115,17 +116,21 @@
         // When the socket is open, we'll update the button
         // the test status and send the first test request.
         socket.onopen = () => {
-            log("Started.");
+
             // This function updates the "Start" button
-            updateTestStatus();
+            refreshStartButton();
             testsRun++;
-            // Get's the time before the first test request
+
+            // Gets the time before the first test request
             startTime = performance.now();
+
             socket.send("start");
+            log("Started.");
         };
 
         socket.onmessage = (ev) => {
-            // Get's the time once the message is received
+
+            // Gets the time once the message is received
             endTime = performance.now();
 
             // Creates a log that indicates the test case is finished
@@ -135,6 +140,7 @@
                     endTime - startTime
                 } milliseconds.`
             );
+
             // We'll store the test results for calculating the average later
             testResults.push(endTime - startTime);
 
@@ -149,7 +155,7 @@
         socket.onclose = () => {
             log("Finished.", "success");
             socket = null;
-            updateTestStatus();
+            refreshStartButton();
         };
     }
 
@@ -161,7 +167,7 @@
 
             // Calculates the average time it took to complete the test
             let testAverage = average(testResults) / 1000;
-            // 10mb were sent. So MB/s is # of mega bytes divided by the
+            // 10mb were sent. So MB/s is # of megabytes divided by the
             // average time it took to complete the tests.
             let mbps = 10 / testAverage;
 
@@ -180,11 +186,11 @@
             );
 
             // Update the "Start" button
-            updateTestStatus();
+            refreshStartButton();
         }
     }
 
-    function updateTestStatus() {
+    function refreshStartButton() {
         if (socket) {
             $startButton.disabled = true;
             $startButton.innerHTML = "Running";
@@ -200,10 +206,10 @@
         if (socket) complete();
         else start();
 
-        updateTestStatus();
+        refreshStartButton();
     });
 
-    updateTestStatus();
+    refreshStartButton();
     log('Click "Start" to begin.');
 
 </script>
