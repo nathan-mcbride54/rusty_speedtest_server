@@ -3,13 +3,6 @@ name = "speedtest-server"
 version = "0.1.0"
 edition = "2021"
 
-[features]
-# If compiling on a system without OpenSSL installed, or cross-compiling for a different
-# architecture, enable this feature to compile OpenSSL as part of the build.
-# See https://docs.rs/openssl/#vendored for more.
-static_ssl = ['openssl/vendored']
-
-
 [[bin]]
 name = "speedtest-server"
 path = "src/main.rs"
@@ -21,7 +14,7 @@ actix = "0.13"
 actix-codec = "0.5"
 actix-files = "0.6"
 actix-rt = "2"
-actix-web = { version = "4", features = ["openssl"] }
+actix-web ="4"
 actix-web-actors = "4.1"
 awc = "3.0.0-beta.21"
 env_logger = "0.9"
@@ -29,4 +22,3 @@ futures-util = { version = "0.3.7", default-features = false, features = ["std",
 log = "0.4"
 tokio = { version = "1.13.1", features = ["full"] }
 tokio-stream = "0.1.8"
-openssl = { version = "0.10" }
